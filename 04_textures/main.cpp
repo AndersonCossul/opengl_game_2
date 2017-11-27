@@ -272,6 +272,7 @@ int main() {
 	bool show_test_window = true;
 	bool show_another_window = false;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	int movesCounter = 5;
 
 	while ( !glfwWindowShouldClose( g_window ) ) {
 
@@ -302,8 +303,8 @@ int main() {
 		// Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug".
 		
 		{
-			ImGui::Begin("Very first window", &show_another_window);
-			ImGui::Text("Hello, world!");
+			ImGui::Begin("Very first window", NULL, ImVec2(0, 0), 0.0f, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs);
+			ImGui::Text("Movimentos restantes: %i", movesCounter);
 			ImGui::End();
 		}
 		
@@ -313,6 +314,17 @@ int main() {
 			0.9f,  -0.9f,  0.0f,	// bottom right
 		};*/
 
+		if (movesCounter < 0) {
+			int msgboxID = MessageBox(
+				NULL,
+					(LPCWSTR)L"\nNão foi dessa vez!",
+					(LPCWSTR)L"GAME OVER",
+					MB_ICONERROR
+				);
+
+			glfwSetWindowShouldClose(g_window, 1);
+			return 0;
+		}
 		if (vertices[6] == 0.0f && vertices[7] == 0.0f
 			&& vertices[38] == 0.3f && vertices[39] == 0.0f
 			&& vertices[70] == 0.6f && vertices[71] == 0.0f
@@ -340,11 +352,11 @@ int main() {
 
 			int msgboxID = MessageBox(
 				NULL,
-				(LPCWSTR)L"Parabéns!\nVocê conseguiu resolver o quebra-cabeça.",
+				(LPCWSTR)L"Parabéns\nAgora tente no próximo nível.",
 				(LPCWSTR)L"JOGO",
 				MB_DEFBUTTON2
 			);
-
+			
 			glfwSetWindowShouldClose(g_window, 1);
 
 			return 0;
@@ -355,6 +367,8 @@ int main() {
 		}
 		if (GLFW_PRESS == glfwGetKey(g_window, GLFW_KEY_UP)) {
 			if (points_square_empty[4] > -0.9f) {
+				--movesCounter;
+
 				points_square_empty[4] -= 0.6f;
 				points_square_empty[1] -= 0.6f;
 
@@ -393,6 +407,8 @@ int main() {
 		}
 		if (GLFW_PRESS == glfwGetKey(g_window, GLFW_KEY_DOWN)) {
 			if (points_square_empty[1] < 0.9f) {
+				--movesCounter;
+
 				points_square_empty[1] += 0.6f;
 				points_square_empty[4] += 0.6f;
 
@@ -431,6 +447,8 @@ int main() {
 		}
 		if (GLFW_PRESS == glfwGetKey(g_window, GLFW_KEY_LEFT)) {
 			if (points_square_empty[3] < 0.9f) {
+				--movesCounter;
+
 				points_square_empty[3] += 0.6f;
 				points_square_empty[0] += 0.6f;
 
@@ -468,8 +486,9 @@ int main() {
 			}
 		}
 		if (GLFW_PRESS == glfwGetKey(g_window, GLFW_KEY_RIGHT)) {
-
 			if (points_square_empty[0] > -0.9f) {
+				--movesCounter;
+				
 				points_square_empty[0] -= 0.6f;
 				points_square_empty[3] -= 0.6f;
 
