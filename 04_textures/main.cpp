@@ -19,128 +19,128 @@ int g_gl_width = 640;
 int g_gl_height = 480;
 GLFWwindow *g_window = NULL;
 
-int main() {
-	restart_gl_log();
-	// all the GLFW and GLEW start-up code is moved to here in gl_utils.cpp
-	start_gl("Texture Mapping");
-	// tell GL to only draw onto a pixel if the shape is closer to the viewer
-	glEnable( GL_DEPTH_TEST ); // enable depth-testing
-	glDepthFunc( GL_LESS );		 // depth-testing interprets a smaller value as "closer"
 
-	/* OTHER STUFF GOES HERE NEXT */
-
-
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
-	/*
-	float vertices[] = {
-		// positions				// colors           // texture coords
-		//1
-		-0.9f, 0.9f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,	// top left
-		-0.3f, 0.9f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3f, 0.0f,	// top right
-		-0.3f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3f, 0.3f, // bottom right
-		-0.9f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.3f,	// bottom left
+float vertices[] = {
+	// positions				// colors           // texture coords
+	//3
+	/*0*/-0.9f, 0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.6f, 0.0f,	// top left
+	-0.3f,  0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.9f, 0.0f,	// top right
+	-0.3f,  0.3f, 0.0f,		1.0f, 0.0f, 0.0f,   0.9f, 0.3f, // bottom right
+	-0.9f,  0.3f, 0.0f,		1.0f, 0.0f, 0.0f,   0.6f, 0.3f,	// bottom left
+															//4
+	/*32*/-0.3f,  0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.0f, 0.3f,	// top left
+	0.3f,   0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.3f, 0.3f,	// top right
+	0.3f,   0.3f, 0.0f,		1.0f, 0.0f, 0.0f,   0.3f, 0.6f, // bottom right
+	-0.3f,  0.3f, 0.0f,		1.0f, 0.0f, 0.0f,   0.0f, 0.6f,	// bottom left
+															//1
+	/*64*/0.3f,   0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.0f, 0.0f,	// top left
+	0.9f,   0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.3f, 0.0f,	// top right
+	0.9f,   0.3f, 0.0f,		1.0f, 0.0f, 0.0f,   0.3f, 0.3f, // bottom right
+	0.3f,   0.3f, 0.0f,		1.0f, 0.0f, 0.0f,   0.0f, 0.3f,	// bottom left
 															//2
-		-0.3f, 0.9f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3f, 0.0f,	// top left
-		0.3f, 0.9f, 0.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.0f,	// top right
-		0.3f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f, // bottom right
-		-0.3f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3f, 0.3f,	// bottom left
-															//3
-		0.3f, 0.9f, 0.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.0f,	// top left
-		0.9f, 0.9f, 0.0f, 1.0f, 0.0f, 0.0f, 0.9f, 0.0f,	// top right
-		0.9f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.9f, 0.3f, // bottom right
-		0.3f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f,	// bottom left
-														//4
-		-0.9f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.3f,	// top left
-		-0.3f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3f, 0.3f,	// top right
-		-0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3f, 0.6f, // bottom right
-		-0.9f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.6f,	// bottom left
-															//5
-		-0.3f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3f, 0.3f,	// top left
-		0.3f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f,	// top right
-		0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.6f, // bottom right
-		-0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3f, 0.6f,	// bottom left
-															//6
-		0.3f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.3f,	// top left
-		0.9f, 0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.9f, 0.3f,	// top right
-		0.9f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.9f, 0.6f, // bottom right
-		0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.6f,	// bottom left
-															//7
-		-0.9f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.6f,	// top left
-		-0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3f, 0.6f,	// top right
-		-0.3f, -0.9f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3f, 0.9f, // bottom right
-		-0.9f, -0.9f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.9f,	// bottom left
+	/*96*/-0.9f,  0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.0f,	// top left
+	-0.3f,  0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.0f,	// top right
+	-0.3f,  -0.3f, 0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.3f, // bottom right
+	-0.9f,  -0.3f, 0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.3f,	// bottom left
 															//8
-		-0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3f, 0.6f,	// top left
-		0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.6f,	// top right
-		0.3f, -0.9f, 0.0f, 1.0f, 0.0f, 0.0f, 0.6f, 0.9f, // bottom right
-		-0.3f, -0.9f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3f, 0.9f,	// bottom left
+	/*128*/-0.3f,  0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.6f,	// top left
+	0.3f,   0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.6f,	// top right
+	0.3f,   -0.3f, 0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.9f, // bottom right
+	-0.3f,  -0.3f, 0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.9f,	// bottom left
+															//7
+	/*160*/0.3f,   0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.0f, 0.6f,	// top left
+	0.9f,   0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.6f,	// top right
+	0.9f,   -0.3f, 0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.9f, // bottom right
+	0.3f,   -0.3f, 0.0f,	1.0f, 0.0f, 0.0f,   0.0f, 0.9f,	// bottom left
+															//6
+	/*192*/-0.9f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.3f,	// top left
+	-0.3f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.9f, 0.3f,	// top right
+	-0.3f,  -0.9f,  0.0f,	1.0f, 0.0f, 0.0f,   0.9f, 0.6f, // bottom right
+	-0.9f,  -0.9f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.6f,	// bottom left
+															//5
+	/*224*/-0.3f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.3f,	// top left
+	0.3f,   -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.3f,	// top right
+	0.3f,   -0.9f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.6f, // bottom right
+	-0.3f,  -0.9f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.6f,	// bottom left
 															//9
-		0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,	// top left
-		0.9f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,	// top right
-		0.9f, -0.9f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // bottom right
-		0.3f, -0.9f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f	// bottom left
-	};
-	*/
+	/*256*/0.3f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.5f, 0.5f,	// top left
+	0.9f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.5F, 0.5f,	// top right
+	0.9f,  -0.9f,  0.0f,	1.0f, 0.0f, 0.0f,   0.5f, 0.5f, // bottom right
+	0.3f,  -0.9f,  0.0f,	1.0f, 0.0f, 0.0f,   0.5f, 0.5f	// bottom left
+};
 
-	float vertices[] = {
+float points_square_empty[];
+
+int pos_square;
+
+unsigned int indices[];
+
+int movesCounter;
+int lengthLine;
+int lengthSquare;
+
+void levelOne();
+
+void levelOne() {
+
+	vertices[] = {
 		// positions				// colors           // texture coords
 		//3
-   /*0*/-0.9f, 0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.6f, 0.0f,	// top left
+		/*0*/-0.9f, 0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.6f, 0.0f,	// top left
 		-0.3f,  0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.9f, 0.0f,	// top right
 		-0.3f,  0.3f, 0.0f,		1.0f, 0.0f, 0.0f,   0.9f, 0.3f, // bottom right
 		-0.9f,  0.3f, 0.0f,		1.0f, 0.0f, 0.0f,   0.6f, 0.3f,	// bottom left
-		//4
-  /*32*/-0.3f,  0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.0f, 0.3f,	// top left
+																//4
+		/*32*/-0.3f,  0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.0f, 0.3f,	// top left
 		0.3f,   0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.3f, 0.3f,	// top right
 		0.3f,   0.3f, 0.0f,		1.0f, 0.0f, 0.0f,   0.3f, 0.6f, // bottom right
 		-0.3f,  0.3f, 0.0f,		1.0f, 0.0f, 0.0f,   0.0f, 0.6f,	// bottom left
-		//1
-  /*64*/0.3f,   0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.0f, 0.0f,	// top left
+																//1
+		/*64*/0.3f,   0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.0f, 0.0f,	// top left
 		0.9f,   0.9f, 0.0f,		1.0f, 0.0f, 0.0f,   0.3f, 0.0f,	// top right
 		0.9f,   0.3f, 0.0f,		1.0f, 0.0f, 0.0f,   0.3f, 0.3f, // bottom right
 		0.3f,   0.3f, 0.0f,		1.0f, 0.0f, 0.0f,   0.0f, 0.3f,	// bottom left
-		//2
-  /*96*/-0.9f,  0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.0f,	// top left
+																//2
+		/*96*/-0.9f,  0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.0f,	// top left
 		-0.3f,  0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.0f,	// top right
 		-0.3f,  -0.3f, 0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.3f, // bottom right
 		-0.9f,  -0.3f, 0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.3f,	// bottom left
-		//8
- /*128*/-0.3f,  0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.6f,	// top left
+																//8
+		/*128*/-0.3f,  0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.6f,	// top left
 		0.3f,   0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.6f,	// top right
 		0.3f,   -0.3f, 0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.9f, // bottom right
 		-0.3f,  -0.3f, 0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.9f,	// bottom left
-		//7
- /*160*/0.3f,   0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.0f, 0.6f,	// top left
+																//7
+		/*160*/0.3f,   0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.0f, 0.6f,	// top left
 		0.9f,   0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.6f,	// top right
 		0.9f,   -0.3f, 0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.9f, // bottom right
 		0.3f,   -0.3f, 0.0f,	1.0f, 0.0f, 0.0f,   0.0f, 0.9f,	// bottom left
-		//6
- /*192*/-0.9f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.3f,	// top left
+																//6
+		/*192*/-0.9f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.3f,	// top left
 		-0.3f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.9f, 0.3f,	// top right
 		-0.3f,  -0.9f,  0.0f,	1.0f, 0.0f, 0.0f,   0.9f, 0.6f, // bottom right
 		-0.9f,  -0.9f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.6f,	// bottom left
-		//5
- /*224*/-0.3f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.3f,	// top left
+																//5
+		/*224*/-0.3f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.3f,	// top left
 		0.3f,   -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.3f,	// top right
 		0.3f,   -0.9f,  0.0f,	1.0f, 0.0f, 0.0f,   0.6f, 0.6f, // bottom right
 		-0.3f,  -0.9f,  0.0f,	1.0f, 0.0f, 0.0f,   0.3f, 0.6f,	// bottom left
-		//9
- /*256*/0.3f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.5f, 0.5f,	// top left
+																//9
+		/*256*/0.3f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.5f, 0.5f,	// top left
 		0.9f,  -0.3f,  0.0f,	1.0f, 0.0f, 0.0f,   0.5F, 0.5f,	// top right
 		0.9f,  -0.9f,  0.0f,	1.0f, 0.0f, 0.0f,   0.5f, 0.5f, // bottom right
 		0.3f,  -0.9f,  0.0f,	1.0f, 0.0f, 0.0f,   0.5f, 0.5f	// bottom left
 	};
 
-	float points_square_empty[] = {
+	points_square_empty[] = {
 		0.3f, -0.3f, 0.0f,
 		0.9f, -0.9f, 0.0f
 
 	};
 
-	int pos_square = 262;
+	pos_square = 262;
 
-	unsigned int indices[] = {
+	indices[] = {
 		// 1
 		0, 1, 2, // first triangle
 		0, 2, 3,  // second triangle
@@ -169,6 +169,22 @@ int main() {
 		32, 33, 34, // first triangle
 		32, 34, 35  // second triangle
 	};
+
+	movesCounter = 30;
+	lengthLine = 96;
+	lengthSquare = 32;
+}
+
+int main() {
+	restart_gl_log();
+	// all the GLFW and GLEW start-up code is moved to here in gl_utils.cpp
+	start_gl("Texture Mapping");
+	// tell GL to only draw onto a pixel if the shape is closer to the viewer
+	glEnable( GL_DEPTH_TEST ); // enable depth-testing
+	glDepthFunc( GL_LESS );		 // depth-testing interprets a smaller value as "closer"
+
+
+	levelOne();
 
 	unsigned int VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
@@ -272,7 +288,6 @@ int main() {
 	bool show_test_window = true;
 	bool show_another_window = false;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-	int movesCounter = 5;
 
 	while ( !glfwWindowShouldClose( g_window ) ) {
 
@@ -373,23 +388,23 @@ int main() {
 				points_square_empty[1] -= 0.6f;
 
 
-				float p1_x = vertices[pos_square + 96];
-				float p1_y = vertices[pos_square + 96 + 1];
-				float p2_x = vertices[pos_square + 96 + 8];
-				float p2_y = vertices[pos_square + 96 + 9];
-				float p3_x = vertices[pos_square + 96 + 16];
-				float p3_y = vertices[pos_square + 96 + 17];
-				float p4_x = vertices[pos_square + 96 + 24];
-				float p4_y = vertices[pos_square + 96 + 25];
+				float p1_x = vertices[pos_square + lengthLine];
+				float p1_y = vertices[pos_square + lengthLine + 1];
+				float p2_x = vertices[pos_square + lengthLine + 8];
+				float p2_y = vertices[pos_square + lengthLine + 9];
+				float p3_x = vertices[pos_square + lengthLine + 16];
+				float p3_y = vertices[pos_square + lengthLine + 17];
+				float p4_x = vertices[pos_square + lengthLine + 24];
+				float p4_y = vertices[pos_square + lengthLine + 25];
 
-				vertices[pos_square + 96] = 0.5f;
-				vertices[pos_square + 96 + 1] = 0.5f;
-				vertices[pos_square + 96 + 8] = 0.5f;
-				vertices[pos_square + 96 + 9] = 0.5f;
-				vertices[pos_square + 96 + 16] = 0.5f;
-				vertices[pos_square + 96 + 17] = 0.5f;
-				vertices[pos_square + 96 + 24] = 0.5f;
-				vertices[pos_square + 96 + 25] = 0.5f;
+				vertices[pos_square + lengthLine] = 0.5f;
+				vertices[pos_square + lengthLine + 1] = 0.5f;
+				vertices[pos_square + lengthLine + 8] = 0.5f;
+				vertices[pos_square + lengthLine + 9] = 0.5f;
+				vertices[pos_square + lengthLine + 16] = 0.5f;
+				vertices[pos_square + lengthLine + 17] = 0.5f;
+				vertices[pos_square + lengthLine + 24] = 0.5f;
+				vertices[pos_square + lengthLine + 25] = 0.5f;
 
 				vertices[pos_square] = p1_x;
 				vertices[pos_square + 1] = p1_y;
@@ -413,23 +428,23 @@ int main() {
 				points_square_empty[4] += 0.6f;
 
 
-				float p1_x = vertices[pos_square - 96];
-				float p1_y = vertices[pos_square - 96 + 1];
-				float p2_x = vertices[pos_square - 96 + 8];
-				float p2_y = vertices[pos_square - 96 + 9];
-				float p3_x = vertices[pos_square - 96 + 16];
-				float p3_y = vertices[pos_square - 96 + 17];
-				float p4_x = vertices[pos_square - 96 + 24];
-				float p4_y = vertices[pos_square - 96 + 25];
+				float p1_x = vertices[pos_square - lengthLine];
+				float p1_y = vertices[pos_square - lengthLine + 1];
+				float p2_x = vertices[pos_square - lengthLine + 8];
+				float p2_y = vertices[pos_square - lengthLine + 9];
+				float p3_x = vertices[pos_square - lengthLine + 16];
+				float p3_y = vertices[pos_square - lengthLine + 17];
+				float p4_x = vertices[pos_square - lengthLine + 24];
+				float p4_y = vertices[pos_square - lengthLine + 25];
 
-				vertices[pos_square - 96] = 0.5f;
-				vertices[pos_square - 96 + 1] = 0.5f;
-				vertices[pos_square - 96 + 8] = 0.5f;
-				vertices[pos_square - 96 + 9] = 0.5f;
-				vertices[pos_square - 96 + 16] = 0.5f;
-				vertices[pos_square - 96 + 17] = 0.5f;
-				vertices[pos_square - 96 + 24] = 0.5f;
-				vertices[pos_square - 96 + 25] = 0.5f;
+				vertices[pos_square - lengthLine] = 0.5f;
+				vertices[pos_square - lengthLine + 1] = 0.5f;
+				vertices[pos_square - lengthLine + 8] = 0.5f;
+				vertices[pos_square - lengthLine + 9] = 0.5f;
+				vertices[pos_square - lengthLine + 16] = 0.5f;
+				vertices[pos_square - lengthLine + 17] = 0.5f;
+				vertices[pos_square - lengthLine + 24] = 0.5f;
+				vertices[pos_square - lengthLine + 25] = 0.5f;
 
 				vertices[pos_square ] = p1_x;
 				vertices[pos_square + 1] = p1_y;
@@ -453,23 +468,23 @@ int main() {
 				points_square_empty[0] += 0.6f;
 
 
-				float p1_x = vertices[pos_square + 32];
-				float p1_y = vertices[pos_square + 32 + 1];
-				float p2_x = vertices[pos_square + 32 + 8];
-				float p2_y = vertices[pos_square + 32 + 9];
-				float p3_x = vertices[pos_square + 32 + 16];
-				float p3_y = vertices[pos_square + 32 + 17];
-				float p4_x = vertices[pos_square + 32 + 24];
-				float p4_y = vertices[pos_square + 32 + 25];
+				float p1_x = vertices[pos_square + lengthSquare];
+				float p1_y = vertices[pos_square + lengthSquare + 1];
+				float p2_x = vertices[pos_square + lengthSquare + 8];
+				float p2_y = vertices[pos_square + lengthSquare + 9];
+				float p3_x = vertices[pos_square + lengthSquare + 16];
+				float p3_y = vertices[pos_square + lengthSquare + 17];
+				float p4_x = vertices[pos_square + lengthSquare + 24];
+				float p4_y = vertices[pos_square + lengthSquare + 25];
 
-				vertices[pos_square + 32] = 0.5f;
-				vertices[pos_square + 32 + 1] = 0.5f;
-				vertices[pos_square + 32 + 8] = 0.5f;
-				vertices[pos_square + 32 + 9] = 0.5f;
-				vertices[pos_square + 32 + 16] = 0.5f;
-				vertices[pos_square + 32 + 17] = 0.5f;
-				vertices[pos_square + 32 + 24] = 0.5f;
-				vertices[pos_square + 32 + 25] = 0.5f;
+				vertices[pos_square + lengthSquare] = 0.5f;
+				vertices[pos_square + lengthSquare + 1] = 0.5f;
+				vertices[pos_square + lengthSquare + 8] = 0.5f;
+				vertices[pos_square + lengthSquare + 9] = 0.5f;
+				vertices[pos_square + lengthSquare + 16] = 0.5f;
+				vertices[pos_square + lengthSquare + 17] = 0.5f;
+				vertices[pos_square + lengthSquare + 24] = 0.5f;
+				vertices[pos_square + lengthSquare + 25] = 0.5f;
 
 				vertices[pos_square] = p1_x;
 				vertices[pos_square + 1] = p1_y;
@@ -493,23 +508,23 @@ int main() {
 				points_square_empty[3] -= 0.6f;
 
 
-				float p1_x = vertices[pos_square - 32];
-				float p1_y = vertices[pos_square - 32 + 1];
-				float p2_x = vertices[pos_square - 32 + 8];
-				float p2_y = vertices[pos_square - 32 + 9];
-				float p3_x = vertices[pos_square - 32 + 16];
-				float p3_y = vertices[pos_square - 32 + 17];
-				float p4_x = vertices[pos_square - 32 + 24];
-				float p4_y = vertices[pos_square - 32 + 25];
+				float p1_x = vertices[pos_square - lengthSquare];
+				float p1_y = vertices[pos_square - lengthSquare + 1];
+				float p2_x = vertices[pos_square - lengthSquare + 8];
+				float p2_y = vertices[pos_square - lengthSquare + 9];
+				float p3_x = vertices[pos_square - lengthSquare + 16];
+				float p3_y = vertices[pos_square - lengthSquare + 17];
+				float p4_x = vertices[pos_square - lengthSquare + 24];
+				float p4_y = vertices[pos_square - lengthSquare + 25];
 
-				vertices[pos_square - 32] = 0.5f;
-				vertices[pos_square - 32 + 1] = 0.5f;
-				vertices[pos_square - 32 + 8] = 0.5f;
-				vertices[pos_square - 32 + 9] = 0.5f;
-				vertices[pos_square - 32 + 16] = 0.5f;
-				vertices[pos_square - 32 + 17] = 0.5f;
-				vertices[pos_square - 32 + 24] = 0.5f;
-				vertices[pos_square - 32 + 25] = 0.5f;
+				vertices[pos_square - lengthSquare] = 0.5f;
+				vertices[pos_square - lengthSquare + 1] = 0.5f;
+				vertices[pos_square - lengthSquare + 8] = 0.5f;
+				vertices[pos_square - lengthSquare + 9] = 0.5f;
+				vertices[pos_square - lengthSquare + 16] = 0.5f;
+				vertices[pos_square - lengthSquare + 17] = 0.5f;
+				vertices[pos_square - lengthSquare + 24] = 0.5f;
+				vertices[pos_square - lengthSquare + 25] = 0.5f;
 
 				vertices[pos_square] = p1_x;
 				vertices[pos_square + 1] = p1_y;
