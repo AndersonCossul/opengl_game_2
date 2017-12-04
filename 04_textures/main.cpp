@@ -6,9 +6,12 @@
 #include <windows.h>
 
 int main() {
-	int level = getLevelByMenu();
-	switch (level)
+	bool shouldKeepRunning = true;
+	do
 	{
+		int level = getLevelByMenu();
+		switch (level)
+		{
 		case 1:
 			runLevelOne();
 			break;
@@ -21,9 +24,14 @@ int main() {
 		default:
 			int msgboxID = MessageBox(
 				NULL,
-				(LPCWSTR)L"Você quebrou o jogo.",
-				(LPCWSTR)L"Vacilão",
+				(LPCWSTR)L"Arrevua",
+				(LPCWSTR)L"Vacilão.",
 				MB_DEFBUTTON2
 				);
-	}
+			shouldKeepRunning = false;
+		}
+	} while (shouldKeepRunning);
+
+	glfwTerminate();
+	return 0;
 }

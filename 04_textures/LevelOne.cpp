@@ -229,9 +229,10 @@ int runLevelOne() {
 
 	bool show_test_window = true;
 	bool show_another_window = false;
+	bool shouldExit = false;
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-	while (!glfwWindowShouldClose(g_window)) {
+	while (!shouldExit) {
 
 		//Sleep(100);
 
@@ -279,8 +280,7 @@ int runLevelOne() {
 				MB_ICONERROR
 			);
 
-			glfwSetWindowShouldClose(g_window, 1);
-			return 0;
+			shouldExit = true;
 		}
 		if (vertices[6] == 0.0f && vertices[7] == 0.0f
 			&& vertices[38] == 0.3f && vertices[39] == 0.0f
@@ -314,13 +314,11 @@ int runLevelOne() {
 				MB_DEFBUTTON2
 			);
 
-			glfwSetWindowShouldClose(g_window, 1);
-
-			return 0;
+			shouldExit = true;
 		}
 
 		if (GLFW_PRESS == glfwGetKey(g_window, GLFW_KEY_ESCAPE)) {
-			glfwSetWindowShouldClose(g_window, 1);
+			shouldExit = true;
 		}
 		if (GLFW_PRESS == glfwGetKey(g_window, GLFW_KEY_UP)) {
 			if (points_square_empty[4] > -0.9f) {
@@ -493,7 +491,8 @@ int runLevelOne() {
 
 	ImGui_ImplGlfwGL3_Shutdown();
 	// close GL context and any other GLFW resources
-	glfwTerminate();
+	//glfwTerminate();
+	glfwDestroyWindow(g_window);
 	return 0;
 }
 

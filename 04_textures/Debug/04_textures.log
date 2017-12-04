@@ -1,3 +1,5 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(400,5): warning MSB8029: The Intermediate directory or Output directory cannot reside under the Temporary directory as it could lead to issues with incremental build.
-  main.cpp
+  LevelTwo.cpp
+  LevelOne.cpp
+  Generating Code...
   04_textures.vcxproj -> C:\Users\acossul\AppData\Local\Temp\anderson cossul\opengl_game_2\04_textures\Debug\04_textures.exe

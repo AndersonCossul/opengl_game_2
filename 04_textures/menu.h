@@ -54,6 +54,11 @@ int getLevelByMenu()
 			{
 				level = 3;
 			}
+
+			if (ImGui::Button("Desistir"))
+			{
+				level = 999;
+			}
 			ImGui::End();
 		}
 
@@ -68,7 +73,6 @@ int getLevelByMenu()
 
 	ImGui_ImplGlfwGL3_Shutdown();
 	glfwDestroyWindow(window);
-	//glfwTerminate();
 
 	return level;
 }
