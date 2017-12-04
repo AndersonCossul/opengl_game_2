@@ -24,6 +24,10 @@
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="imgui_impl_glfw_gl3.cpp" />
+    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelOne.cpp" />
+    <ClCompile Include="LevelThree.cpp" />
+    <ClCompile Include="LevelTwo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="maths_funcs.cpp" />
     <ClCompile Include="stb_image.c" />
@@ -34,6 +38,10 @@
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_glfw_gl3.h" />
     <ClInclude Include="imgui_internal.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelOne.h" />
+    <ClInclude Include="LevelThree.h" />
+    <ClInclude Include="LevelTwo.h" />
     <ClInclude Include="maths_funcs.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stb_rect_pack.h" />
