@@ -1,4 +1,3 @@
-﻿  LevelThree.cpp
-c:\users\pedro.bergental\documents\unisinos\2017-2\processamento grafico\prova grau b\opengl_game_2\04_textures\levelthree.cpp(573): warning C4305: '=': truncation from 'double' to 'float'
-  04_textures.vcxproj -> C:\Users\pedro.bergental\Documents\Unisinos\2017-2\Processamento Grafico\Prova Grau B\opengl_game_2\04_textures\Debug\04_textures.exe
-  04_textures.vcxproj -> C:\Users\pedro.bergental\Documents\Unisinos\2017-2\Processamento Grafico\Prova Grau B\opengl_game_2\04_textures\Debug\04_textures.pdb (Full PDB)
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(400,5): warning MSB8029: The Intermediate directory or Output directory cannot reside under the Temporary directory as it could lead to issues with incremental build.
+  main.cpp
+  04_textures.vcxproj -> C:\Users\acossul\AppData\Local\Temp\anderson cossul\opengl_game_2\04_textures\Debug\04_textures.exe

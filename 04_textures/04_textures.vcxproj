@@ -43,6 +43,7 @@
     <ClInclude Include="LevelThree.h" />
     <ClInclude Include="LevelTwo.h" />
     <ClInclude Include="maths_funcs.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stb_rect_pack.h" />
     <ClInclude Include="stb_textedit.h" />
